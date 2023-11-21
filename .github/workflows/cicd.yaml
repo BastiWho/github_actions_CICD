@@ -40,5 +40,5 @@ jobs:
           token: ${{ secrets.TFSTATE_TOKEN }}
           BUCKET_NAME: ${{ env.BUCKET_NAME }}
       - run: terraform -chdir=./infra validate
-      - run: terraform -chdir=./infra apply -auto-approve
+      - run: terraform -chdir=./infra apply -auto-approve -lock=false
       - run: aws s3 --region eu-central-1 sync ./build s3://${{ env.BUCKET_NAME }}/ --profile Basti_ts
