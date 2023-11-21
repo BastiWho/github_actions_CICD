@@ -6,5 +6,7 @@ terraform {
     lock_method    = "PUT"
     unlock_method  = "DELETE"
     username       = "BastiWho/github_actions_CICD"
+    workspaces     = ["${var.bucket_name}-workspace"]
   }
 }
+

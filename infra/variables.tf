@@ -7,3 +7,7 @@ variable "aws_profile" {
   type    = string
   default = "Basti_ts"
 }
+
+variable "bucket_name" {
+  type = string
+}

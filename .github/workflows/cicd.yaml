@@ -5,6 +5,8 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
+      - name: Set environment variable for bucket name
+        run: echo "BUCKET_NAME=ha139-bucket-23ewjffg" >> $GITHUB_ENV
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - name: Check out repository code
@@ -36,14 +38,7 @@ jobs:
       - run: terraform -chdir=./infra init -backend-config="password=$token"
         env:
           token: ${{ secrets.TFSTATE_TOKEN }}
+          BUCKET_NAME: ${{ env.BUCKET_NAME }}
       - run: terraform -chdir=./infra validate
-      - run: terraform -chdir=./infra apply -auto-approve
-      - run: |
-          # Create a temporary file to store the Terraform output
-          terraform output -json > /tmp/tf_output.json
-
-          # Extract the bucket name from the Terraform output
-          bucket_name=$(jq -r '.bucket_name' /tmp/tf_output.json)
-
-          # Use the extracted bucket name in the AWS CLI command
-          aws s3 --region eu-central-1 sync ./build s3://$bucket_name/ --profile Basti_ts
+      - run: terraform -chdir=./infra apply -auto-approve -var "bucket_name=<span class="math-inline">\{\{ secrets\.BUCKET\_NAME \}\}"
+      - run: aws s3 --region eu-central-1 sync ./build s3://${{ env.BUCKET_NAME }}/ --profile Basti_ts
