@@ -4,5 +4,5 @@ variable "region" {
 }
 variable "aws_profile" {
   type    = string
-  default = "703049158876_Student"
+  default = "Basti_ts"
 }
