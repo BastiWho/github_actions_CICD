@@ -38,4 +38,4 @@ jobs:
           token: ${{ secrets.TFSTATE_TOKEN }}
       - run: terraform -chdir=./infra validate
       - run: terraform -chdir=./infra apply -auto-approve
-      - run: aws s3 --region eu-central-1 sync ./build s3://ha139_bucket_23ewjf/ --profile Basti_ts
+      - run: aws s3 --region eu-central-1 sync ./build s3://ha139-bucket-23ewjf/ --profile Basti_ts
