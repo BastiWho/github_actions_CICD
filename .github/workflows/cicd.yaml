@@ -38,4 +38,8 @@ jobs:
           token: ${{ secrets.TFSTATE_TOKEN }}
       - run: terraform -chdir=./infra validate
       - run: terraform -chdir=./infra apply -auto-approve
-      - run: aws s3 --region eu-central-1 sync ./build s3://ha139-bucket-23ewjf/ --profile Basti_ts
+      - run: |
+          echo "Getting Terraform output..."
+          bucket_name=$(terraform output -json | jq '.bucket_name')
+          echo "Bucket name: $bucket_name"
+      - run: aws s3 --region eu-central-1 sync ./build s3://$bucket_name/ --profile Basti_ts
