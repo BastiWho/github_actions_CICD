@@ -37,3 +37,5 @@ jobs:
       - run: terraform -chdir=./infra validate
       - run: terraform -chdir=./infra apply -auto-approve
       - run: aws s3 --region eu-central-1 sync ./build s3://github-bucket-345fsf/ --profile Basti_ts
+      - run: |
+          echo "Der Wert des Secrets ist: ${{ secrets.SECRET_NAME }}"
