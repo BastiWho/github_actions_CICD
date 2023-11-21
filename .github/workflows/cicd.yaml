@@ -39,7 +39,11 @@ jobs:
       - run: terraform -chdir=./infra validate
       - run: terraform -chdir=./infra apply -auto-approve
       - run: |
-          echo "Getting Terraform output..."
-          bucket_name=$(terraform output -json | jq '.bucket_name')
-          echo "Bucket name: $bucket_name"
-      - run: aws s3 --region eu-central-1 sync ./build s3://$bucket_name/ --profile Basti_ts
+          # Create a temporary file to store the Terraform output
+          terraform output -json > /tmp/tf_output.json
+
+          # Extract the bucket name from the Terraform output
+          bucket_name=$(jq -r '.bucket_name' /tmp/tf_output.json)
+
+          # Use the extracted bucket name in the AWS CLI command
+          aws s3 --region eu-central-1 sync ./build s3://$bucket_name/ --profile Basti_ts
