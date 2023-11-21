@@ -33,8 +33,9 @@ jobs:
       - run: aws s3 ls --region eu-central-1 --profile Basti_ts
       - uses: hashicorp/setup-terraform@v2
       - run: terraform version
-      - run: terraform -chdir=./infra init
-      - run: terraform init -backend-config="bucket=${{ secrets.TFSTATE_BUCKET_NAME }}" -backend-config="key=${{ secrets.TFSTATE_KEY }}"
+      - run: terraform -chdir=./infra init -backend-config="password=$token"
+        env:
+          token: ${{ secrets.TFSTATE_TOKEN }}
       - run: terraform -chdir=./infra validate
       - run: terraform -chdir=./infra apply -auto-approve
       - run: aws s3 --region eu-central-1 sync ./build s3://ha139_bucket_23ewjf/ --profile Basti_ts
