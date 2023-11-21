@@ -37,6 +37,4 @@ jobs:
       - run: terraform init -backend-config="bucket=${{ secrets.TFSTATE_BUCKET_NAME }}" -backend-config="key=${{ secrets.TFSTATE_KEY }}"
       - run: terraform -chdir=./infra validate
       - run: terraform -chdir=./infra apply -auto-approve
-      - run: aws s3 --region eu-central-1 sync ./build s3://github-bucket-345fsf/ --profile Basti_ts
-      - run: |
-          echo "Der Wert des Secrets ist: ${{ secrets.SECRET_NAME }}"
+      - run: aws s3 --region eu-central-1 sync ./build s3://ha139_bucket_23ewjf/ --profile Basti_ts
